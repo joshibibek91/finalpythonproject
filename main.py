@@ -6,7 +6,7 @@ from estd_connection import estd_connection
 cursor = estd_connection()
 
 
-# def data_entry():
+
 def submit_data():
     status = terms_check_var.get()
     if status == "Accepted":
