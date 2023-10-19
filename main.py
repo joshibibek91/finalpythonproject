@@ -1,8 +1,12 @@
 import tkinter
 from tkinter import ttk
 from tkinter import messagebox
+from estd_connection import estd_connection
+
+cursor = estd_connection()
 
 
+# def data_entry():
 def submit_data():
     status = terms_check_var.get()
     if status == "Accepted":
@@ -15,13 +19,22 @@ def submit_data():
         num_courses = num_courses_spinbox.get()
         num_semesters = num_semesters_spinbox.get()
         registration_status = reg_status_var.get()
+
+        sql = f"""
+                        INSERT INTO DATAENTRY (TITLE, FIRSTNAME, LASTNAME, AGE, NATIONALITY, NUMBER_OF_COURSES, NUMBER_OF_SEMESTERS, REGISTRATION_STATUS ) VALUES ('{title}', '{first_name}', '{last_name}', {age}, '{nationality}', {num_courses}, {num_semesters}, '{registration_status}')                       """
+
+        cursor.execute(sql)
+
+        # cursor.connection.commit()
+
         print(first_name)
+
+
     else:
         tkinter.messagebox.showwarning(title="Error", message="You have not accepted the terms and conditions")
 
-
 window = tkinter.Tk()
-window.title("Dta Entry Form")
+window.title("Data Entry Form")
 
 frame = tkinter.Frame(window)
 frame.pack()
@@ -50,7 +63,6 @@ age_spinbox = tkinter.Spinbox(user_info_frame, from_=18, to=100)
 age_label.grid(row=2, column=0)
 age_spinbox.grid(row=3, column=0)
 
-
 nationality_label = tkinter.Label(user_info_frame, text="Nationality")
 nationality_combobox = ttk.Combobox(user_info_frame, values=["Nepal", "Singapore", "Japan"])
 nationality_label.grid(row=2, column=1)
@@ -58,7 +70,6 @@ nationality_combobox.grid(row=3, column=1)
 
 for widget in user_info_frame.winfo_children():
     widget.grid_configure(padx=10, pady=5)
-
 
 # Saving Course Info
 courses_frame = tkinter.LabelFrame(frame)
@@ -83,7 +94,6 @@ num_semesters_spinbox.grid(row=1, column=2)
 
 for widget in courses_frame.winfo_children():
     widget.grid_configure(padx=10, pady=5)
-
 
 # Accept terms
 terms_frame = tkinter.LabelFrame(frame, text="Terms & Conditions")
